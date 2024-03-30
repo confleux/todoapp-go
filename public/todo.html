@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>confleux</title>
+  <link rel="stylesheet" href="src/style/style.css">
+  <link href="https://fonts.googleapis.com/css?family=Open Sans" rel="stylesheet">
+  <script src="src/script/loadTime.js"></script>
+  <script src="src/script/location.js"></script>
+  <script src="src/script/todo.js"></script>
+</head>
+
+<body>
+  <header class="header">
+    <div class="main_container">
+      <div class="header__content">
+        <div class="header__logo">confleux</div>
+        <nav class="header__nav" id="header__nav">
+          <ul class="header__nav_ul">
+            <li class="header__nav_li"><a href="index.html" class="header__nav_link">Main</a></li>
+            <li class="header__nav_li"><a href="form.html" class="header__nav_link">Form</a></li>
+            <li class="header__nav_li"><a href="todo.html" class="header__nav_link">Todo</a></li>
+            <li class="header__nav_li"><a href="#footer__contacts" class="header__nav_link">Contacts</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="main_container">
+      <h1>Todo list</h1>
+      <section class="main__section">
+        <div class="main__section_table" id="main__section_table">
+          <table>
+            <thead id="main__section_table_head">
+            </thead>
+            <tbody id="main__section_table_body">
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <div class="main__section_messages" id="main__section_messages"></div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__content">
+      <div class="footer__copyright">
+        <p>Copyright &copy; 2023</p>
+      </div>
+      <div class="footer__loadTime">
+        <p>loadTime: <span id="footer__loadTime_value">?</span></p>
+      </div>
+      <div class="footer__contacts" id="footer__contacts">
+        <a href="https://t.me/confleux" class="footer__contacts_link">@confleux</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
