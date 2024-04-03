@@ -7,8 +7,9 @@ import (
 )
 
 type Config struct {
-	Host string `env:"HOST" env-description:"http server host" env-required:"true"`
-	Port string `env:"PORT" env-description:"http server port" env-required:"true"`
+	Environment string `env:"ENVIRONMENT" env-description:"app environment"`
+	Host        string `env:"HOST" env-description:"http server host" env-required:"true"`
+	Port        string `env:"PORT" env-description:"http server port" env-required:"true"`
 }
 
 func MustLoad() *Config {
