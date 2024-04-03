@@ -1,14 +1,14 @@
 package config
 
 import (
+	"github.com/ilyakaznacheev/cleanenv"
 	"github.com/joho/godotenv"
 	"log"
-	"os"
 )
 
 type Config struct {
-	Host string `env:"HOST" env-required:"true"`
-	Port string `env:"PORT" env-required:"true"`
+	Host string `env:"HOST" env-description:"http server host" env-required:"true"`
+	Port string `env:"PORT" env-description:"http server port" env-required:"true"`
 }
 
 func MustLoad() *Config {
@@ -16,11 +16,11 @@ func MustLoad() *Config {
 		log.Fatalf("Error loading .env file: %s", err)
 	}
 
-	host := os.Getenv("HOST")
-	port := os.Getenv("PORT")
+	var cfg Config
 
-	return &Config{
-		Host: host,
-		Port: port,
+	if err := cleanenv.ReadEnv(&cfg); err != nil {
+		log.Fatalf("Unable to load .env file: %s", err)
 	}
+
+	return &cfg
 }
