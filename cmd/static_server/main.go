@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+
 	"web-confleux/internal/config"
 )
 
@@ -24,8 +25,7 @@ func main() {
 	fs := http.FileServer(http.Dir("./public"))
 	http.Handle("/", fs)
 
-	err := http.ListenAndServe(fmt.Sprintf(":%s", cfg.Port), nil)
-	if err != nil {
+	if err := http.ListenAndServe(fmt.Sprintf(":%s", cfg.Port), nil); err != nil {
 		log.Error("Unable to start server")
 	}
 }
