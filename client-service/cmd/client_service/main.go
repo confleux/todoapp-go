@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"os"
 
-	"web-confleux/internal/config"
+	"client-service/internal/config"
 )
 
 const (

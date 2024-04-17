@@ -1,4 +1,4 @@
-module web-confleux
+module client-service
 
 go 1.22.1
 

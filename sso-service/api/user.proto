@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package user;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "pkg/user";
+
+message User {
+  int32 id = 1;
+  string name = 2;
+
+  repeated Task tasks = 3;
+
+  google.protobuf.Timestamp last_update = 4;
+}
+
+message Task {
+  int32 id = 1;
+  string title = 2;
+  string description = 3;
+  optional google.protobuf.Timestamp due_date = 4;
+}
+
+message Users {
+  repeated User users = 1;
+}
