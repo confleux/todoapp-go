@@ -4,12 +4,25 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"time"
 )
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
+	start := time.Now()
+
 	t, _ := template.ParseGlob("public/template/*.html")
 
-	err := t.ExecuteTemplate(w, "index", nil)
+	end := time.Now()
+
+	elapsed := end.Sub(start).Milliseconds()
+
+	data := struct {
+		ServerLoadTime int64
+	}{
+		ServerLoadTime: elapsed,
+	}
+
+	err := t.ExecuteTemplate(w, "index", data)
 
 	if err != nil {
 		fmt.Println(err)
@@ -18,9 +31,22 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func FormHandler(w http.ResponseWriter, r *http.Request) {
+	start := time.Now()
+
 	t, _ := template.ParseGlob("public/template/*.html")
 
-	err := t.ExecuteTemplate(w, "form", nil)
+	end := time.Now()
+
+	elapsed := end.Sub(start).Milliseconds()
+
+	data := struct {
+		ServerLoadTime int64
+	}{
+		ServerLoadTime: elapsed,
+	}
+
+	err := t.ExecuteTemplate(w, "form", data)
+
 	if err != nil {
 		fmt.Println(err)
 		http.Error(w, "Failed to execute template", http.StatusInternalServerError)
@@ -28,9 +54,27 @@ func FormHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func TodoHandler(w http.ResponseWriter, r *http.Request) {
+	start := time.Now()
+
 	t, _ := template.ParseGlob("public/template/*.html")
 
-	err := t.ExecuteTemplate(w, "todo", nil)
+	end := time.Now()
+
+	elapsed := end.Sub(start).Milliseconds()
+
+	data := struct {
+		ServerLoadTime int64
+	}{
+		ServerLoadTime: elapsed,
+	}
+
+	err := t.ExecuteTemplate(w, "todo", data)
+
+	if err != nil {
+		fmt.Println(err)
+		http.Error(w, "Failed to execute template", http.StatusInternalServerError)
+	}
+
 	if err != nil {
 		fmt.Println(err)
 		http.Error(w, "Failed to execute template", http.StatusInternalServerError)
