@@ -1,0 +1,21 @@
+{{ define "todo" }}
+
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>confleux</title>
+  <link rel="stylesheet" href="../src/style/style.css">
+  <link href="https://fonts.googleapis.com/css?family=Open Sans" rel="stylesheet">
+  <script src="../src/script/loadTime.js"></script>
+  <script src="../src/script/location.js"></script>
+  <script src="../src/script/todo.js"></script>
+</head>
+
+<body>
+  {{ template "header" . }}
+  {{ template "todo_body" . }}
+  {{ template "footer" . }}
+</body>
+</html>
+
+{{ end }}

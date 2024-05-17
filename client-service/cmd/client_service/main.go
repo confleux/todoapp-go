@@ -7,6 +7,10 @@ import (
 	"os"
 
 	"client-service/internal/config"
+	"client-service/internal/front"
+
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 )
 
 const (
@@ -22,10 +26,17 @@ func main() {
 	log.Debug("Debug logs are enabled")
 	log.Info("Starting app...", slog.String("environment", cfg.Environment))
 
-	fs := http.FileServer(http.Dir("./public"))
-	http.Handle("/", fs)
+	r := chi.NewRouter()
+	r.Use(middleware.Logger)
 
-	if err := http.ListenAndServe(fmt.Sprintf(":%s", cfg.Port), nil); err != nil {
+	r.Get("/", front.IndexHandler)
+	r.Get("/form", front.FormHandler)
+	r.Get("/todo", front.TodoHandler)
+
+	fs := http.FileServer(http.Dir("./public/src"))
+	r.Handle("/src/*", http.StripPrefix("/src/", fs))
+
+	if err := http.ListenAndServe(fmt.Sprintf(":%d", cfg.HTTP.Port), r); err != nil {
 		log.Error("Unable to start server")
 	}
 }
