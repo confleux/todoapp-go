@@ -1,28 +1,45 @@
 package config
 
 import (
-	"log"
-
+	"flag"
 	"github.com/ilyakaznacheev/cleanenv"
-	"github.com/joho/godotenv"
+	"log"
+	"os"
 )
 
 type Config struct {
-	Environment string `env:"ENVIRONMENT" env-description:"app environment"`
-	Host        string `env:"HOST" env-description:"http server host" env-required:"true"`
-	Port        string `env:"PORT" env-description:"http server port" env-required:"true"`
+	Environment string `yaml:"environment" envDefault:"development"`
+	HTTP        HTTPServerConfig
+}
+
+type HTTPServerConfig struct {
+	Port int `yaml:"port"`
 }
 
 func MustLoad() *Config {
-	if err := godotenv.Load(); err != nil {
-		log.Fatalf("Error loading .env file: %s", err)
+	configPath := getConfigPath()
+	if configPath == "" {
+		log.Fatalln("Config file path is empty")
+	}
+
+	if _, err := os.Stat(configPath); os.IsNotExist(err) {
+		log.Fatalf("Config file does not exist: %s ", configPath)
 	}
 
 	var cfg Config
 
-	if err := cleanenv.ReadEnv(&cfg); err != nil {
-		log.Fatalf("Unable to load .env file: %s", err)
+	if err := cleanenv.ReadConfig(configPath, &cfg); err != nil {
+		log.Fatalf("Unable to load config file: %v", err)
 	}
 
 	return &cfg
+}
+
+func getConfigPath() string {
+	var res string
+
+	flag.StringVar(&res, "config", "", "config file path")
+	flag.Parse()
+
+	return res
 }
