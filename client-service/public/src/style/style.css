@@ -74,7 +74,7 @@ body {
 
 .header__nav_link:hover {
   background-color: #f2f2f2;
-} 
+}
 
 .main__section {
   display: flex;
@@ -171,9 +171,21 @@ body {
 .header__nav_link_enabled {
   background: #f2f2f2;
 }
-        
+
 .main__section_form {
   width: 100%;
+}
+
+.login__section_form {
+  width: 100%;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.login__section_form_input {
+  width: 40%;
+  height: 20px;
+  resize: none;
 }
 
 .main__section_form_input {
