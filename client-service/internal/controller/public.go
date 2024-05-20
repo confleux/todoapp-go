@@ -108,3 +108,31 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Failed to execute template", http.StatusInternalServerError)
 	}
 }
+
+func SignupHandler(w http.ResponseWriter, r *http.Request) {
+	start := time.Now()
+
+	t, _ := template.ParseGlob("public/template/*.html")
+
+	end := time.Now()
+
+	elapsed := end.Sub(start).Milliseconds()
+
+	data := struct {
+		ServerLoadTime int64
+	}{
+		ServerLoadTime: elapsed,
+	}
+
+	err := t.ExecuteTemplate(w, "signup", data)
+
+	if err != nil {
+		fmt.Println(err)
+		http.Error(w, "Failed to execute template", http.StatusInternalServerError)
+	}
+
+	if err != nil {
+		fmt.Println(err)
+		http.Error(w, "Failed to execute template", http.StatusInternalServerError)
+	}
+}

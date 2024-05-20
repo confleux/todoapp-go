@@ -40,6 +40,7 @@ func main() {
 	r.Get("/form", controller.FormHandler)
 	r.Get("/todo", controller.TodoHandler)
 	r.Get("/login", controller.LoginHandler)
+	r.Get("/signup", controller.SignupHandler)
 
 	fs := http.FileServer(http.Dir("./public/src"))
 	r.Handle("/src/*", http.StripPrefix("/src/", fs))
@@ -63,7 +64,6 @@ func main() {
 	// API endpoints
 	r.Post("/api/signup", authController.SignUp)
 
-	fmt.Println(cfg.HTTPServer.Port)
 	if err := http.ListenAndServe(fmt.Sprintf(":%d", cfg.HTTPServer.Port), r); err != nil {
 		log.Error("Unable to start server")
 	}

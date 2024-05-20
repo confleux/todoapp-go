@@ -1,0 +1,17 @@
+{{ define "signup_body" }}
+<main class="main">
+    <div class="main_container">
+        <h1>Sign up</h1>
+        <section class="main__section">
+            <form class="login__section_form" id="signup__section_form" onsubmit="return false">
+                <textarea placeholder="Email" type="text" class="login__section_form_input" id="signup__section_form_input_email" autofocus></textarea>
+                <br>
+                <textarea placeholder="Password" type="password" class="login__section_form_input" id="signup__section_form_input_password" autofocus></textarea>
+                <br>
+                <button class="login__section_form_button" type="submit">Sign up</button>
+            </form>
+        </section>
+        <div class="main__section_messages" id="main__section_messages"></div>
+    </div>
+</main>
+{{ end }}

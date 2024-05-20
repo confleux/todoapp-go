@@ -13,6 +13,11 @@ type AuthController struct {
 	userDB      *repository.UserRepository
 }
 
+type SignUpResponse struct {
+	Uid   string `json:"uid"`
+	Email string `json:"email"`
+}
+
 func NewAuthController(authService *auth.AuthService, userDB *repository.UserRepository) *AuthController {
 	return &AuthController{authService: authService, userDB: userDB}
 }
@@ -32,12 +37,17 @@ func (ac *AuthController) SignUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	uid, err := ac.userDB.CreateUser(r.Context(), userRecord.UID, userRecord.Email)
+	_, err = ac.userDB.CreateUser(r.Context(), userRecord.UID, userRecord.Email)
 	if err != nil {
 		http.Error(w, "Unable to sign up user", http.StatusInternalServerError)
 		return
 	}
 
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
-	_, err = w.Write([]byte(uid))
+
+	if err = json.NewEncoder(w).Encode(&SignUpResponse{Uid: userRecord.UID, Email: userRecord.Email}); err != nil {
+		http.Error(w, "Unable to sign up user", http.StatusInternalServerError)
+		return
+	}
 }
