@@ -2,18 +2,29 @@ package config
 
 import (
 	"flag"
-	"github.com/ilyakaznacheev/cleanenv"
 	"log"
 	"os"
+
+	"github.com/ilyakaznacheev/cleanenv"
 )
 
 type Config struct {
-	Environment string `yaml:"environment" envDefault:"development"`
-	HTTP        HTTPServerConfig
+	Environment    string `yaml:"environment" envDefault:"development"`
+	HTTPServer     HTTPServerConfig
+	PostgresConfig PostgresServerConfig
+	FirebaseConfig FirebaseConfig
 }
 
 type HTTPServerConfig struct {
 	Port int `yaml:"port"`
+}
+
+type PostgresServerConfig struct {
+	Url string `yaml:"url"`
+}
+
+type FirebaseConfig struct {
+	ServiceAccountConfigPath string `yaml:"service_account_config_path"`
 }
 
 func MustLoad() *Config {
