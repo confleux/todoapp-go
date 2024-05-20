@@ -45,7 +45,7 @@ func main() {
 	r.Handle("/src/*", http.StripPrefix("/src/", fs))
 
 	// Create db conn pool
-	pool, err := pgxpool.New(context.Background(), cfg.PostgresConfig.Url)
+	pool, err := pgxpool.New(context.Background(), cfg.Postgres.Url)
 	if err != nil {
 		log.Error("unable to init connection: %w", err)
 	}
@@ -55,7 +55,7 @@ func main() {
 	userRepo := repository.NewUserRepository(pool)
 
 	// Create service
-	authService, _ := auth.NewAuthService(cfg.FirebaseConfig.ServiceAccountConfigPath)
+	authService, _ := auth.NewAuthService(cfg.Firebase.ServiceAccountConfigPath)
 
 	// Create controller
 	authController := controller.NewAuthController(authService, userRepo)
@@ -63,6 +63,7 @@ func main() {
 	// API endpoints
 	r.Post("/api/signup", authController.SignUp)
 
+	fmt.Println(cfg.HTTPServer.Port)
 	if err := http.ListenAndServe(fmt.Sprintf(":%d", cfg.HTTPServer.Port), r); err != nil {
 		log.Error("Unable to start server")
 	}

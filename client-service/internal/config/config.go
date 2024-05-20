@@ -9,10 +9,10 @@ import (
 )
 
 type Config struct {
-	Environment    string `yaml:"environment" envDefault:"development"`
-	HTTPServer     HTTPServerConfig
-	PostgresConfig PostgresServerConfig
-	FirebaseConfig FirebaseConfig
+	Environment string `yaml:"environment" envDefault:"development"`
+	HTTPServer  HTTPServerConfig
+	Postgres    PostgresServerConfig
+	Firebase    FirebaseConfig
 }
 
 type HTTPServerConfig struct {

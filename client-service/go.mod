@@ -6,6 +6,7 @@ require (
 	firebase.google.com/go/v4 v4.14.0
 	github.com/go-chi/chi/v5 v5.0.12
 	github.com/ilyakaznacheev/cleanenv v1.5.0
+	github.com/jackc/pgx v3.6.2+incompatible
 	github.com/jackc/pgx/v5 v5.5.5
 	google.golang.org/api v0.170.0
 )
