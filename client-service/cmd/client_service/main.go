@@ -1,16 +1,20 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log/slog"
 	"net/http"
 	"os"
 
-	"client-service/internal/config"
-	"client-service/internal/front"
-
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/jackc/pgx/v5/pgxpool"
+
+	"client-service/internal/config"
+	"client-service/internal/controller"
+	"client-service/internal/repository"
+	auth "client-service/internal/service/auth"
 )
 
 const (
@@ -19,8 +23,10 @@ const (
 )
 
 func main() {
+	// Basic init
 	cfg := config.MustLoad()
 
+	// TODO: Do I actually need logger?
 	log := initLogger(cfg.Environment)
 
 	log.Debug("Debug logs are enabled")
@@ -29,14 +35,35 @@ func main() {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 
-	r.Get("/", front.IndexHandler)
-	r.Get("/form", front.FormHandler)
-	r.Get("/todo", front.TodoHandler)
+	// Serve public
+	r.Get("/", controller.IndexHandler)
+	r.Get("/form", controller.FormHandler)
+	r.Get("/todo", controller.TodoHandler)
+	r.Get("/login", controller.LoginHandler)
 
 	fs := http.FileServer(http.Dir("./public/src"))
 	r.Handle("/src/*", http.StripPrefix("/src/", fs))
 
-	if err := http.ListenAndServe(fmt.Sprintf(":%d", cfg.HTTP.Port), r); err != nil {
+	// Create db conn pool
+	pool, err := pgxpool.New(context.Background(), cfg.PostgresConfig.Url)
+	if err != nil {
+		log.Error("unable to init connection: %w", err)
+	}
+	defer pool.Close()
+
+	// Create repo
+	userRepo := repository.NewUserRepository(pool)
+
+	// Create service
+	authService, _ := auth.NewAuthService(cfg.FirebaseConfig.ServiceAccountConfigPath)
+
+	// Create controller
+	authController := controller.NewAuthController(authService, userRepo)
+
+	// API endpoints
+	r.Post("/api/signup", authController.SignUp)
+
+	if err := http.ListenAndServe(fmt.Sprintf(":%d", cfg.HTTPServer.Port), r); err != nil {
 		log.Error("Unable to start server")
 	}
 }
