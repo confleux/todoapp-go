@@ -33,7 +33,26 @@ func (repo *TodoRepository) GetTodoItemById(ctx context.Context, id uuid.UUID) (
 	res := entities.Todo{}
 
 	if err := repo.Pool.QueryRow(ctx, "SELECT description, id, created_at, uid  FROM public.todo_item WHERE id=$1", id).Scan(&res.Description, &res.Id, &res.CreatedAt, &res.Uid); err != nil {
-		return entities.Todo{}, fmt.Errorf("unable to get todo_item: %w", err)
+		return entities.Todo{}, fmt.Errorf("unable to get todo_item by id: %w", err)
+	}
+
+	return res, nil
+}
+
+func (repo *TodoRepository) GetTodoItemsByUid(ctx context.Context, uid string) ([]entities.Todo, error) {
+	res := make([]entities.Todo, 0)
+
+	rows, _ := repo.Pool.Query(ctx, "SELECT description, id, created_at, uid  FROM public.todo_item WHERE uid=$1", uid)
+	defer rows.Close()
+
+	for rows.Next() {
+		tmp := entities.Todo{}
+
+		if err := rows.Scan(&tmp.Description, &tmp.Id, &tmp.CreatedAt, &tmp.Uid); err != nil {
+			return nil, fmt.Errorf("unable to get todo_items by uid: %w", err)
+		}
+
+		res = append(res, tmp)
 	}
 
 	return res, nil
