@@ -3,9 +3,10 @@ package repository
 import (
 	"context"
 	"fmt"
-	uuid "github.com/jackc/pgx/pgtype/ext/gofrs-uuid"
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"time"
+
+	"client-service/internal/entities"
 )
 
 type TodoRepository struct {
@@ -16,14 +17,24 @@ func NewTodoRepository(pool *pgxpool.Pool) *TodoRepository {
 	return &TodoRepository{Pool: pool}
 }
 
-func (repo *TodoRepository) CreateTodoItem(ctx context.Context, userId uuid.UUID, username string) (uuid.UUID, error) {
-	createdAt := time.Now()
-
+func (repo *TodoRepository) CreateTodoItem(ctx context.Context, description string, uid string) (uuid.UUID, error) {
 	var res uuid.UUID
 
-	if err := repo.Pool.QueryRow(ctx, "INSERT INTO user (user_id, username, created_at) values (?, ?, ?) returning user_id", userId, username, createdAt).Scan(&res); err != nil {
-		return uuid.UUID{}, fmt.Errorf("unable to get string: %w", err)
+	id := uuid.New()
+
+	if err := repo.Pool.QueryRow(ctx, "INSERT INTO public.todo_item (description, id, uid) VALUES ($1, $2, $3) RETURNING id", description, id, uid).Scan(&res); err != nil {
+		return uuid.UUID{}, fmt.Errorf("unable to create todo_item: %w", err)
 	}
 
-	return userId, nil
+	return res, nil
+}
+
+func (repo *TodoRepository) GetTodoItemById(ctx context.Context, id uuid.UUID) (entities.Todo, error) {
+	res := entities.Todo{}
+
+	if err := repo.Pool.QueryRow(ctx, "SELECT description, id, created_at, uid  FROM public.todo_item WHERE id=$1", id).Scan(&res.Description, &res.Id, &res.CreatedAt, &res.Uid); err != nil {
+		return entities.Todo{}, fmt.Errorf("unable to get todo_item: %w", err)
+	}
+
+	return res, nil
 }
