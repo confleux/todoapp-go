@@ -2,10 +2,9 @@ package auth
 
 import (
 	"context"
-	"fmt"
-
 	firebase "firebase.google.com/go/v4"
 	"firebase.google.com/go/v4/auth"
+	"fmt"
 	"google.golang.org/api/option"
 )
 
@@ -38,4 +37,18 @@ func (as *AuthService) SignUp(ctx context.Context, email string, password string
 	}
 
 	return createdUser, nil
+}
+
+func (as *AuthService) VerifyToken(ctx context.Context, idToken string) (*auth.Token, error) {
+	client, err := as.app.Auth(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("error loading firebase client: %w", err)
+	}
+
+	token, err := client.VerifyIDToken(ctx, idToken)
+	if err != nil {
+		return nil, fmt.Errorf("unable to authorize token: %w", err)
+	}
+
+	return token, nil
 }
