@@ -82,7 +82,7 @@ func (ct *TodoController) GetTodo(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated)
+	w.WriteHeader(http.StatusOK)
 
 	if err = json.NewEncoder(w).Encode(&todo); err != nil {
 		http.Error(w, "Unable to get todo", http.StatusInternalServerError)
@@ -104,10 +104,39 @@ func (ct *TodoController) GetTodos(w http.ResponseWriter, r *http.Request) {
 	res.Todos = todos
 
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated)
+	w.WriteHeader(http.StatusOK)
 
 	if err = json.NewEncoder(w).Encode(&res); err != nil {
 		http.Error(w, "Unable to get todos", http.StatusInternalServerError)
+		return
+	}
+}
+
+func (ct *TodoController) RemoveTodo(w http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
+
+	if len(id) == 0 {
+		http.Error(w, "Id cannot be empty", http.StatusBadRequest)
+		return
+	}
+
+	todoId, err := uuid.Parse(id)
+	if err != nil {
+		http.Error(w, "Invalid id", http.StatusBadRequest)
+		return
+	}
+
+	todo, err := ct.todoDB.RemoveTodoItemById(r.Context(), todoId)
+	if err != nil {
+		http.Error(w, "Unable to get todo", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+
+	if err = json.NewEncoder(w).Encode(&todo); err != nil {
+		http.Error(w, "Unable to get todo", http.StatusInternalServerError)
 		return
 	}
 }

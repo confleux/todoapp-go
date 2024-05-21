@@ -58,3 +58,13 @@ func (repo *TodoRepository) GetTodoItemsByUid(ctx context.Context, uid string) (
 
 	return res, nil
 }
+
+func (repo *TodoRepository) RemoveTodoItemById(ctx context.Context, id uuid.UUID) (entities.Todo, error) {
+	res := entities.Todo{}
+
+	if err := repo.Pool.QueryRow(ctx, "DELETE from public.todo_item WHERE id=$1 RETURNING description, id, created_at, uid", id).Scan(&res.Description, &res.Id, &res.CreatedAt, &res.Uid); err != nil {
+		return entities.Todo{}, fmt.Errorf("unable to remove todo_item by id: %w", err)
+	}
+
+	return res, nil
+}

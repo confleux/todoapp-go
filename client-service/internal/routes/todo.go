@@ -27,7 +27,7 @@ func (rs TodosResource) Routes() chi.Router {
 		// r.Use(rs.TodoCtx) // lets have a todos map, and lets actually load/manipulate
 		r.Get("/", rs.todoController.GetTodo) // GET /todos/{id} - read a single todo by :id
 		//r.Put("/", rs.Update)    // PUT /todos/{id} - update a single todo by :id
-		//r.Delete("/", rs.Delete) // DELETE /todos/{id} - delete a single todo by :id
+		r.Delete("/", rs.todoController.RemoveTodo) // DELETE /todos/{id} - delete a single todo by :id
 		//r.Get("/sync", rs.Sync)
 	})
 
