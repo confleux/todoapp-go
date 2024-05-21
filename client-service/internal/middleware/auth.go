@@ -1,10 +1,11 @@
 package middleware
 
 import (
-	"client-service/internal/service/auth"
 	"context"
 	"net/http"
 	"strings"
+
+	"client-service/internal/service/auth"
 )
 
 // HTTP middleware setting a value on the request context

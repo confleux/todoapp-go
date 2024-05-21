@@ -60,13 +60,6 @@ func main() {
 	userRepo := repository.NewUserRepository(pool)
 	todoRepo := repository.NewTodoRepository(pool)
 
-	// test
-	//fmt.Println(todoRepo.CreateTodoItem(context.Background(), "test", "Hnl1Sy5sB2ZOlsGTIrg6mc5rJA93"))
-	//fmt.Println(todoRepo.GetTodoItemsByUid(context.Background(), "Hnl1Sy5sB2ZOlsGTIrg6mc5rJA93"))
-	//t, _ := uuid.Parse("d6c6d62b-664d-4053-adfd-fca0fd35ae2a")
-	//fmt.Println(todoRepo.GetTodoItemById(context.Background(), t))
-	// end test
-
 	// Create service
 	authService, _ := auth.NewAuthService(cfg.Firebase.ServiceAccountConfigPath)
 

@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"fmt"
+
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
 
@@ -18,15 +19,15 @@ func NewTodoRepository(pool *pgxpool.Pool) *TodoRepository {
 }
 
 func (repo *TodoRepository) CreateTodoItem(ctx context.Context, description string, uid string) (entities.Todo, error) {
-	var res entities.Todo
+	var todo entities.Todo
 
 	id := uuid.New()
 
-	if err := repo.Pool.QueryRow(ctx, "INSERT INTO public.todo_item (description, id, uid) VALUES ($1, $2, $3) RETURNING description, id, created_at, uid", description, id, uid).Scan(&res.Description, &res.Id, &res.CreatedAt, &res.Uid); err != nil {
+	if err := repo.Pool.QueryRow(ctx, "INSERT INTO public.todo_item (description, id, uid) VALUES ($1, $2, $3) RETURNING description, id, created_at, uid", description, id, uid).Scan(&todo.Description, &todo.Id, &todo.CreatedAt, &todo.Uid); err != nil {
 		return entities.Todo{}, fmt.Errorf("unable to create todo_item: %w", err)
 	}
 
-	return res, nil
+	return todo, nil
 }
 
 func (repo *TodoRepository) GetTodoItemById(ctx context.Context, id uuid.UUID) (entities.Todo, error) {
