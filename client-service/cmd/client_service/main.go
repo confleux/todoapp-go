@@ -1,6 +1,8 @@
 package main
 
 import (
+	middleware2 "client-service/internal/middleware"
+	"client-service/internal/routes"
 	"context"
 	"fmt"
 	"log/slog"
@@ -34,13 +36,15 @@ func main() {
 
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
+	r.Use(middleware.Recoverer)
 
 	// Serve public
-	r.Get("/", controller.IndexHandler)
-	r.Get("/form", controller.FormHandler)
-	r.Get("/todo", controller.TodoHandler)
-	r.Get("/login", controller.LoginHandler)
-	r.Get("/signup", controller.SignupHandler)
+	publicGroup := r.Group(nil)
+	publicGroup.Get("/", controller.IndexHandler)
+	publicGroup.Get("/form", controller.FormHandler)
+	publicGroup.Get("/todo", controller.TodoHandler)
+	publicGroup.Get("/login", controller.LoginHandler)
+	publicGroup.Get("/signup", controller.SignupHandler)
 
 	fs := http.FileServer(http.Dir("./public/src"))
 	r.Handle("/src/*", http.StripPrefix("/src/", fs))
@@ -54,15 +58,29 @@ func main() {
 
 	// Create repo
 	userRepo := repository.NewUserRepository(pool)
+	todoRepo := repository.NewTodoRepository(pool)
+
+	// test
+	//fmt.Println(todoRepo.CreateTodoItem(context.Background(), "test", "Hnl1Sy5sB2ZOlsGTIrg6mc5rJA93"))
+	//fmt.Println(todoRepo.GetTodoItemsByUid(context.Background(), "Hnl1Sy5sB2ZOlsGTIrg6mc5rJA93"))
+	//t, _ := uuid.Parse("d6c6d62b-664d-4053-adfd-fca0fd35ae2a")
+	//fmt.Println(todoRepo.GetTodoItemById(context.Background(), t))
+	// end test
 
 	// Create service
 	authService, _ := auth.NewAuthService(cfg.Firebase.ServiceAccountConfigPath)
 
 	// Create controller
 	authController := controller.NewAuthController(authService, userRepo)
+	todoController := controller.NewTodoController(todoRepo)
 
 	// API endpoints
-	r.Post("/api/signup", authController.SignUp)
+	publicApiGroup := r.Group(nil)
+	publicApiGroup.Post("/api/signup", authController.SignUp)
+
+	privateApiGroup := r.Group(nil)
+	privateApiGroup.Use(middleware2.Auth(authService))
+	privateApiGroup.Mount("/api/todos", routes.NewTodoResource(todoController).Routes())
 
 	if err := http.ListenAndServe(fmt.Sprintf(":%d", cfg.HTTPServer.Port), r); err != nil {
 		log.Error("Unable to start server")

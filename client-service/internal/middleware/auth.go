@@ -12,7 +12,7 @@ func Auth(authService *auth.AuthService) func(handler http.Handler) http.Handler
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			authorizationHeader := r.Header.Get("Authorization")
-			idToken := strings.TrimLeft(authorizationHeader, "Bearer ")
+			idToken := strings.TrimPrefix(authorizationHeader, "Bearer ")
 
 			token, err := authService.VerifyToken(r.Context(), idToken)
 			if err != nil {

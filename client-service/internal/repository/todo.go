@@ -17,13 +17,13 @@ func NewTodoRepository(pool *pgxpool.Pool) *TodoRepository {
 	return &TodoRepository{Pool: pool}
 }
 
-func (repo *TodoRepository) CreateTodoItem(ctx context.Context, description string, uid string) (uuid.UUID, error) {
-	var res uuid.UUID
+func (repo *TodoRepository) CreateTodoItem(ctx context.Context, description string, uid string) (entities.Todo, error) {
+	var res entities.Todo
 
 	id := uuid.New()
 
-	if err := repo.Pool.QueryRow(ctx, "INSERT INTO public.todo_item (description, id, uid) VALUES ($1, $2, $3) RETURNING id", description, id, uid).Scan(&res); err != nil {
-		return uuid.UUID{}, fmt.Errorf("unable to create todo_item: %w", err)
+	if err := repo.Pool.QueryRow(ctx, "INSERT INTO public.todo_item (description, id, uid) VALUES ($1, $2, $3) RETURNING description, id, created_at, uid", description, id, uid).Scan(&res.Description, &res.Id, &res.CreatedAt, &res.Uid); err != nil {
+		return entities.Todo{}, fmt.Errorf("unable to create todo_item: %w", err)
 	}
 
 	return res, nil

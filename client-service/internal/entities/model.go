@@ -7,8 +7,8 @@ import (
 )
 
 type Todo struct {
-	Description string
-	Id          uuid.UUID
-	CreatedAt   time.Time
-	Uid         string
+	Description string    `json:"description"`
+	Id          uuid.UUID `json:"id"`
+	CreatedAt   time.Time `json:"createdAt"`
+	Uid         string    `json:"uid"`
 }
