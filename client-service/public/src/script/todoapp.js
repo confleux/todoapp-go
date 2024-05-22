@@ -1,9 +1,9 @@
 if (window.location.href.includes('todo-app') && !localStorage.getItem('accessToken')) {
   window.location.href = '/login';
 }
+const url = window.location.href.includes('localhost') ? 'http://localhost:3000' : 'https://web-confleux.onrender.com';
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const url = window.location.href.includes('localhost') ? 'http://localhost:3000' : 'https://web-confleux.onrender.com';
   const form = document.getElementById('main__section_form');
   const messages = document.getElementById('main__section_messages');
 
@@ -80,7 +80,7 @@ function createMessageDiv(value, timestamp, id, container) {
 
     try {
       const todoId = div.getAttribute('id');
-      const response = await fetch(`http://localhost:3000/api/todos/${todoId}`, {
+      const response = await fetch(`${url}/api/todos/${todoId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
