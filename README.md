@@ -2,6 +2,8 @@ Krivenko Andrei
 
 [render](https://web-confleux.onrender.com)
 
+[swagger](https://web-confleux.onrender.com/swagger/index.html)
+
 Entities:
 
 ```sql
