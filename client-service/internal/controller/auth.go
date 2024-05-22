@@ -1,10 +1,13 @@
 package controller
 
 import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+
 	"client-service/internal/entities"
 	"client-service/internal/service/auth"
-	"encoding/json"
-	"net/http"
+	firebaseAuth "firebase.google.com/go/v4/auth"
 )
 
 type AuthController struct {
@@ -43,8 +46,13 @@ func (ct *AuthController) SignUp(w http.ResponseWriter, r *http.Request) {
 
 	userRecord, err := ct.authService.SignUp(r.Context(), user.Email, user.Password)
 	if err != nil {
-		http.Error(w, "Unable to sign up user", http.StatusInternalServerError)
-		return
+		if firebaseAuth.IsEmailAlreadyExists(err) {
+			http.Error(w, "Email already exists", http.StatusBadRequest)
+			return
+		} else {
+			http.Error(w, fmt.Sprintf("Unable to sign up user: %v", err), http.StatusBadRequest)
+			return
+		}
 	}
 
 	err = ct.authService.CreateUser(r.Context(), userRecord.UID, userRecord.Email)

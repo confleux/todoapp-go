@@ -1,12 +1,14 @@
 package auth
 
 import (
-	"client-service/internal/repository"
 	"context"
+	"fmt"
+
 	firebase "firebase.google.com/go/v4"
 	"firebase.google.com/go/v4/auth"
-	"fmt"
 	"google.golang.org/api/option"
+
+	"client-service/internal/repository"
 )
 
 type AuthService struct {
@@ -35,7 +37,7 @@ func (s *AuthService) SignUp(ctx context.Context, email string, password string)
 
 	createdUser, err := client.CreateUser(ctx, params)
 	if err != nil {
-		return nil, fmt.Errorf("error creating user: %w", err)
+		return nil, err
 	}
 
 	return createdUser, nil
