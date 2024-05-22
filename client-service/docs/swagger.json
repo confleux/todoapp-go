@@ -2,19 +2,10 @@
     "swagger": "2.0",
     "info": {
         "title": "Todo API",
-        "termsOfService": "http://swagger.io/terms/",
-        "contact": {
-            "name": "API Support",
-            "url": "http://www.swagger.io/support",
-            "email": "support@swagger.io"
-        },
-        "license": {
-            "name": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-        },
+        "contact": {},
         "version": "1.0"
     },
-    "host": "localhost:3000",
+    "host": "web-confleux.onrender.com",
     "basePath": "/api/",
     "paths": {
         "/signup": {
