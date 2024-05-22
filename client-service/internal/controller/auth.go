@@ -2,7 +2,6 @@ package controller
 
 import (
 	"client-service/internal/entities"
-	"client-service/internal/repository"
 	"client-service/internal/service/auth"
 	"encoding/json"
 	"net/http"
@@ -10,7 +9,6 @@ import (
 
 type AuthController struct {
 	authService *auth.AuthService
-	userDB      *repository.UserRepository
 }
 
 type SignUpResponse struct {
@@ -18,8 +16,8 @@ type SignUpResponse struct {
 	Email string `json:"email"`
 }
 
-func NewAuthController(authService *auth.AuthService, userDB *repository.UserRepository) *AuthController {
-	return &AuthController{authService: authService, userDB: userDB}
+func NewAuthController(authService *auth.AuthService) *AuthController {
+	return &AuthController{authService: authService}
 }
 
 func (ct *AuthController) SignUp(w http.ResponseWriter, r *http.Request) {
@@ -37,7 +35,7 @@ func (ct *AuthController) SignUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = ct.userDB.CreateUser(r.Context(), userRecord.UID, userRecord.Email)
+	err = ct.authService.CreateUser(r.Context(), userRecord.UID, userRecord.Email)
 	if err != nil {
 		http.Error(w, "Unable to sign up user", http.StatusInternalServerError)
 		return

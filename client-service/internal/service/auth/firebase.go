@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"client-service/internal/repository"
 	"context"
 	firebase "firebase.google.com/go/v4"
 	"firebase.google.com/go/v4/auth"
@@ -9,10 +10,11 @@ import (
 )
 
 type AuthService struct {
-	app *firebase.App
+	app    *firebase.App
+	userDB *repository.UserRepository
 }
 
-func NewAuthService(serviceAccountKeyPath string) (*AuthService, error) {
+func NewAuthService(serviceAccountKeyPath string, userDB *repository.UserRepository) (*AuthService, error) {
 	opt := option.WithCredentialsFile(serviceAccountKeyPath)
 
 	app, err := firebase.NewApp(context.Background(), nil, opt)
@@ -20,11 +22,11 @@ func NewAuthService(serviceAccountKeyPath string) (*AuthService, error) {
 		return nil, fmt.Errorf("error initializing firebase app: %w", err)
 	}
 
-	return &AuthService{app: app}, nil
+	return &AuthService{app: app, userDB: userDB}, nil
 }
 
-func (as *AuthService) SignUp(ctx context.Context, email string, password string) (*auth.UserRecord, error) {
-	client, err := as.app.Auth(ctx)
+func (s *AuthService) SignUp(ctx context.Context, email string, password string) (*auth.UserRecord, error) {
+	client, err := s.app.Auth(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("error loading firebase client: %w", err)
 	}
@@ -39,8 +41,8 @@ func (as *AuthService) SignUp(ctx context.Context, email string, password string
 	return createdUser, nil
 }
 
-func (as *AuthService) VerifyToken(ctx context.Context, idToken string) (*auth.Token, error) {
-	client, err := as.app.Auth(ctx)
+func (s *AuthService) VerifyToken(ctx context.Context, idToken string) (*auth.Token, error) {
+	client, err := s.app.Auth(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("error loading firebase client: %w", err)
 	}
@@ -51,4 +53,13 @@ func (as *AuthService) VerifyToken(ctx context.Context, idToken string) (*auth.T
 	}
 
 	return token, nil
+}
+
+func (s *AuthService) CreateUser(ctx context.Context, uid string, email string) error {
+	_, err := s.userDB.CreateUser(ctx, uid, email)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

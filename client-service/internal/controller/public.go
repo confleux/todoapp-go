@@ -4,15 +4,12 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
-	"os"
 	"time"
 )
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	start := time.Now()
 
-	fmt.Println("DEBUGGING")
-	fmt.Println(os.Getwd())
 	t, _ := template.ParseGlob("public/template/*.html")
 
 	end := time.Now()

@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"client-service/internal/service"
 	"encoding/json"
 	"net/http"
 
@@ -8,15 +9,14 @@ import (
 	"github.com/google/uuid"
 
 	"client-service/internal/entities"
-	"client-service/internal/repository"
 )
 
 type TodoController struct {
-	todoDB *repository.TodoRepository
+	todoService *service.TodoService
 }
 
-func NewTodoController(userRepo *repository.TodoRepository) *TodoController {
-	return &TodoController{todoDB: userRepo}
+func NewTodoController(todoService *service.TodoService) *TodoController {
+	return &TodoController{todoService: todoService}
 }
 
 type CreateTodoRequest struct {
@@ -46,7 +46,7 @@ func (ct *TodoController) CreateTodo(w http.ResponseWriter, r *http.Request) {
 
 	uid := r.Context().Value("uid").(string)
 
-	todo, err := ct.todoDB.CreateTodoItem(r.Context(), req.Description, uid)
+	todo, err := ct.todoService.CreateTodoItem(r.Context(), req.Description, uid)
 	if err != nil {
 		http.Error(w, "Unable to create todo", http.StatusInternalServerError)
 		return
@@ -75,7 +75,7 @@ func (ct *TodoController) GetTodo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	todo, err := ct.todoDB.GetTodoItemById(r.Context(), todoId)
+	todo, err := ct.todoService.GetTodo(r.Context(), todoId)
 	if err != nil {
 		http.Error(w, "Unable to get todo", http.StatusInternalServerError)
 		return
@@ -95,7 +95,7 @@ func (ct *TodoController) GetTodos(w http.ResponseWriter, r *http.Request) {
 
 	uid := r.Context().Value("uid").(string)
 
-	todos, err := ct.todoDB.GetTodoItemsByUid(r.Context(), uid)
+	todos, err := ct.todoService.GetTodos(r.Context(), uid)
 	if err != nil {
 		http.Error(w, "Unable to get todos", http.StatusInternalServerError)
 		return
@@ -126,7 +126,7 @@ func (ct *TodoController) RemoveTodo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	todo, err := ct.todoDB.RemoveTodoItemById(r.Context(), todoId)
+	todo, err := ct.todoService.RemoveTodo(r.Context(), todoId)
 	if err != nil {
 		http.Error(w, "Unable to remove todo", http.StatusInternalServerError)
 		return

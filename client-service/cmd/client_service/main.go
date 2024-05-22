@@ -3,6 +3,7 @@ package main
 import (
 	middleware2 "client-service/internal/middleware"
 	"client-service/internal/routes"
+	"client-service/internal/service"
 	"context"
 	"fmt"
 	"log/slog"
@@ -62,11 +63,12 @@ func main() {
 	todoRepo := repository.NewTodoRepository(pool)
 
 	// Create service
-	authService, _ := auth.NewAuthService(cfg.Firebase.ServiceAccountConfigPath)
+	authService, _ := auth.NewAuthService(cfg.Firebase.ServiceAccountConfigPath, userRepo)
+	todoService := service.NewTodoService(todoRepo)
 
 	// Create controller
-	authController := controller.NewAuthController(authService, userRepo)
-	todoController := controller.NewTodoController(todoRepo)
+	authController := controller.NewAuthController(authService)
+	todoController := controller.NewTodoController(todoService)
 
 	// API endpoints
 	publicApiGroup := r.Group(nil)
