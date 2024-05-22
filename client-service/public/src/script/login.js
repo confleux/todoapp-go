@@ -7,6 +7,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const email = document.getElementById('login__section_form_input_email').value;
     const password = document.getElementById('login__section_form_input_password').value;
 
+    if (password.length < 6) {
+      window.alert('invalid password length');
+      return;
+    }
+
     firebase.auth().signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
         // Signed in

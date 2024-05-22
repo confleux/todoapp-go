@@ -8,6 +8,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const email = document.getElementById('signup__section_form_input_email').value;
     const password = document.getElementById('signup__section_form_input_password').value;
 
+    if (password.length < 6) {
+      window.alert('invalid password length');
+      return;
+    }
+
     const data = {
       email,
       password,
