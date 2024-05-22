@@ -45,6 +45,7 @@ func main() {
 	publicGroup.Get("/todo", controller.TodoHandler)
 	publicGroup.Get("/login", controller.LoginHandler)
 	publicGroup.Get("/signup", controller.SignupHandler)
+	publicGroup.Get("/todo-app", controller.TodoAppHandler)
 
 	fs := http.FileServer(http.Dir("./public/src"))
 	r.Handle("/src/*", http.StripPrefix("/src/", fs))

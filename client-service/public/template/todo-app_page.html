@@ -1,4 +1,4 @@
-{{ define "todo" }}
+{{ define "todo-app" }}
 
 <html lang="ru">
 <head>
@@ -6,14 +6,18 @@
   <title>confleux</title>
   <link rel="stylesheet" href="../src/style/style.css">
   <link href="https://fonts.googleapis.com/css?family=Open Sans" rel="stylesheet">
+  <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-auth-compat.js"></script>
   <script src="../src/script/loadTime.js"></script>
   <script src="../src/script/location.js"></script>
-  <script src="../src/script/todo.js"></script>
+  <script src="../src/script/firebase.js"></script>
+  <script src="../src/script/todoapp.js"></script>
+  <script src="../src/script/logout.js"></script>
 </head>
 
 <body>
   {{ template "header" . }}
-  {{ template "todo_body" . }}
+  {{ template "todo-app_body" . }}
   {{ template "footer" . }}
 </body>
 </html>

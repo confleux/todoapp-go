@@ -1,4 +1,6 @@
 {{ define "authorization" }}
-    <li class="header__nav_li"><a href="login" class="header__nav_link">Sign in</a></li>
-    <li class="header__nav_li"><a href="signup" class="header__nav_link">Sign up</a></li>
+    <li class="header__nav_li header__auth_unauth_li" id="header__auth_unauth_login"><a href="login" class="header__nav_link">Sign in</a></li>
+    <li class="header__nav_li header__auth_unauth_li" id="header__auth_unauth_signup"><a href="signup" class="header__nav_link">Sign up</a></li>
+    <li class="header__nav_li header__auth_auth" id="header__auth_auth_app"><a href="todo-app" class="header__nav_link">Todo app</a></li>
+    <li class="header__nav_li header__auth_auth" id="header__auth_auth_logout"><a href="/login" class="header__nav_link">Logout</a></li>
 {{ end }}

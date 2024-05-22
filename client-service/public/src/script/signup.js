@@ -12,15 +12,25 @@ document.addEventListener('DOMContentLoaded', () => {
       password,
     };
 
-    const response = await fetch('http://localhost:3000/api/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
+    try {
+      const response = await fetch('http://localhost:3000/api/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
 
-    const parsedResponse = await response.json();
-    console.log(parsedResponse);
+      if (response.ok) {
+        console.log(await response.json());
+        window.alert('Signed up successfully');
+        window.location.href = '/login';
+      } else {
+        window.alert(`Failed to sign up: ${await response.text()}`);
+      }
+
+    } catch (error) {
+      console.log(`Failed to sign up: ${error}`);
+    }
   });
 });

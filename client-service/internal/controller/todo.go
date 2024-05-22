@@ -128,7 +128,7 @@ func (ct *TodoController) RemoveTodo(w http.ResponseWriter, r *http.Request) {
 
 	todo, err := ct.todoDB.RemoveTodoItemById(r.Context(), todoId)
 	if err != nil {
-		http.Error(w, "Unable to get todo", http.StatusInternalServerError)
+		http.Error(w, "Unable to remove todo", http.StatusInternalServerError)
 		return
 	}
 
@@ -136,7 +136,7 @@ func (ct *TodoController) RemoveTodo(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 
 	if err = json.NewEncoder(w).Encode(&todo); err != nil {
-		http.Error(w, "Unable to get todo", http.StatusInternalServerError)
+		http.Error(w, "Unable to remove todo", http.StatusInternalServerError)
 		return
 	}
 }

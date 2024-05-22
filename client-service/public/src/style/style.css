@@ -230,3 +230,18 @@ body {
     transform: rotate(360deg);
   }
 }
+
+.header__auth_unauth {
+  /*margin: 0 10px;*/
+  display: none;
+}
+
+.header__auth_auth {
+  display: none;
+  margin: 0 10px;
+}
+
+.header__auth_auth {
+  display: none;
+  margin: 0 10px;
+}

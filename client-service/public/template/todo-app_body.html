@@ -1,0 +1,16 @@
+{{ define "todo-app_body" }}
+
+<main class="main">
+    <div class="main_container">
+        <h1>Here is your todo list</h1>
+        <section class="main__section">
+            <form class="main__section_form" id="main__section_form">
+                <textarea type="text" class="main__section_form_input" id="main__section_form_input" placeholder="Describe your task here..." autofocus></textarea>
+                <button class="main__section_form_button" type="submit">Add task</button>
+            </form>
+        </section>
+        <div class="main__section_messages" id="main__section_messages"></div>
+    </div>
+</main>
+
+{{ end }}
