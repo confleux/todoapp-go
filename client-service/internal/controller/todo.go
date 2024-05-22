@@ -31,6 +31,21 @@ type GetTodosResponse struct {
 	Todos []entities.Todo `json:"todos"`
 }
 
+// CreateTodo godoc
+//
+//	@Summary Create todo item
+//	@Description	Create todo item
+//	@Tags         todo
+//	@Accept       json
+//	@Produce      json
+//	@Param todo body CreateTodoRequest true "Todo description"
+//	@Success		200	{object}	entities.Todo
+//	@Failure		400	{object}	nil "Bad Request"
+//	@Failure		401	{object}	nil "Unauthorized"
+//	@Failure		500	{object}	nil "Internal Server Error"
+//	@Router /todos [post]
+//
+// @Security Bearer
 func (ct *TodoController) CreateTodo(w http.ResponseWriter, r *http.Request) {
 	var req CreateTodoRequest
 
@@ -61,6 +76,21 @@ func (ct *TodoController) CreateTodo(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// GetTodo godoc
+//
+//	@Summary Get todo item
+//	@Description	Get todo item
+//	@Tags         todo
+//	@Accept       json
+//	@Produce      json
+//	@Param id path string true "Todo uuid"
+//	@Success		200	{object}	entities.Todo
+//	@Failure		400	{object}	nil "Bad Request"
+//	@Failure		401	{object}	nil "Unauthorized"
+//	@Failure		500	{object}	nil "Internal Server Error"
+//	@Router /todos/{id} [get]
+//
+// @Security Bearer
 func (ct *TodoController) GetTodo(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 
@@ -90,6 +120,20 @@ func (ct *TodoController) GetTodo(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// GetTodos godoc
+//
+//	@Summary Get todo items
+//	@Description	Get todo items associated with user
+//	@Tags         todo
+//	@Accept       json
+//	@Produce      json
+//	@Success		200	{object} GetTodosResponse
+//	@Failure		400	{object}	nil "Bad Request"
+//	@Failure		401	{object}	nil "Unauthorized"
+//	@Failure		500	{object}	nil "Internal Server Error"
+//	@Router /todos [get]
+//
+// @Security Bearer
 func (ct *TodoController) GetTodos(w http.ResponseWriter, r *http.Request) {
 	var res GetTodosResponse
 
@@ -112,6 +156,21 @@ func (ct *TodoController) GetTodos(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// RemoveTodo godoc
+//
+//	@Summary Remove todo item
+//	@Description	Remove todo item by id
+//	@Tags         todo
+//	@Accept       json
+//	@Produce      json
+//	@Param id path string true "Todo uuid"
+//	@Success		200	{object} entities.Todo
+//	@Failure		400	{object}	nil "Bad Request"
+//	@Failure		401	{object}	nil "Unauthorized"
+//	@Failure		500	{object}	nil "Internal Server Error"
+//	@Router /todos/{id} [delete]
+//
+// @Security Bearer
 func (ct *TodoController) RemoveTodo(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 

@@ -1,0 +1,194 @@
+basePath: /api/
+definitions:
+  controller.CreateTodoRequest:
+    properties:
+      description:
+        type: string
+    type: object
+  controller.GetTodosResponse:
+    properties:
+      todos:
+        items:
+          $ref: '#/definitions/entities.Todo'
+        type: array
+    type: object
+  controller.SignUpResponse:
+    properties:
+      email:
+        type: string
+      uid:
+        type: string
+    type: object
+  entities.Todo:
+    properties:
+      createdAt:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      uid:
+        type: string
+    type: object
+  entities.User:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+host: localhost:3000
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Todo API
+  version: "1.0"
+paths:
+  /signup:
+    post:
+      consumes:
+      - application/json
+      description: Sign up user
+      parameters:
+      - description: User credentials
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/entities.User'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/controller.SignUpResponse'
+        "400":
+          description: Bad request
+        "500":
+          description: Internal Server Error
+      summary: Sign up user
+      tags:
+      - signup
+  /todos:
+    get:
+      consumes:
+      - application/json
+      description: Get todo items associated with user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.GetTodosResponse'
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+      security:
+      - Bearer: []
+      summary: Get todo items
+      tags:
+      - todo
+    post:
+      consumes:
+      - application/json
+      description: Create todo item
+      parameters:
+      - description: Todo description
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/controller.CreateTodoRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Todo'
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+      security:
+      - Bearer: []
+      summary: Create todo item
+      tags:
+      - todo
+  /todos/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove todo item by id
+      parameters:
+      - description: Todo uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Todo'
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+      security:
+      - Bearer: []
+      summary: Remove todo item
+      tags:
+      - todo
+    get:
+      consumes:
+      - application/json
+      description: Get todo item
+      parameters:
+      - description: Todo uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Todo'
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+      security:
+      - Bearer: []
+      summary: Get todo item
+      tags:
+      - todo
+securityDefinitions:
+  Bearer:
+    description: Type "Bearer" followed by a space and JWT token.
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

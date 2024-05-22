@@ -20,6 +20,18 @@ func NewAuthController(authService *auth.AuthService) *AuthController {
 	return &AuthController{authService: authService}
 }
 
+// SignUp godoc
+//
+//	@Summary Sign up user
+//	@Description	Sign up user
+//	@Tags         signup
+//	@Accept       json
+//	@Produce      json
+//	@Param user body entities.User true "User credentials"
+//	@Success		201	{object}	SignUpResponse
+//	@Failure		400	{object}	nil "Bad request"
+//	@Failure		500	{object}	nil "Internal Server Error"
+//	@Router /signup [post]
 func (ct *AuthController) SignUp(w http.ResponseWriter, r *http.Request) {
 	var user entities.User
 
