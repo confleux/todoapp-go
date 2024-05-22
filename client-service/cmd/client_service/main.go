@@ -90,7 +90,7 @@ func main() {
 	privateApiGroup.Mount("/api/todos", routes.NewTodoResource(todoController).Routes())
 
 	r.Get("/swagger/*", httpSwagger.Handler(
-		httpSwagger.URL("http://localhost:3000/swagger/doc.json"), //The url pointing to API definition
+		httpSwagger.URL("https://web-confleux.onrender.com/swagger/doc.json"), //The url pointing to API definition
 	))
 	if err := http.ListenAndServe(fmt.Sprintf(":%d", cfg.HTTPServer.Port), r); err != nil {
 		log.Error("Unable to start server")
