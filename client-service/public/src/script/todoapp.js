@@ -3,11 +3,12 @@ if (window.location.href.includes('todo-app') && !localStorage.getItem('accessTo
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+  const url = window.location.href.includes('localhost') ? 'http://localhost:3000' : 'https://web-confleux.onrender.com';
   const form = document.getElementById('main__section_form');
   const messages = document.getElementById('main__section_messages');
 
   try {
-    const response = await fetch('http://localhost:3000/api/todos', {
+    const response = await fetch(`${url}/api/todos`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -39,7 +40,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     try {
-      const response = await fetch('http://localhost:3000/api/todos', {
+      const response = await fetch(`${url}/api/todos`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

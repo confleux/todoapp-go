@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const url = window.location.href.includes('localhost') ? 'http://localhost:3000' : 'https://web-confleux.onrender.com';
   const form = document.getElementById('signup__section_form');
 
   form.addEventListener('submit', async (event) => {
@@ -13,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     try {
-      const response = await fetch('http://localhost:3000/api/signup', {
+      const response = await fetch(`${url}/api/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
