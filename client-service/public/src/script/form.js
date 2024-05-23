@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('main__section_form');
   const messages = document.getElementById('main__section_messages');
 
-  const url = window.location.href.includes('localhost') ? 'ws://localhost:3000' : 'ws://web-confleux.onrender.com';
+  const url = window.location.href.includes('localhost') ? 'ws://localhost:3000' : 'wss://web-confleux.onrender.com';
   const socket = new WebSocket(`${url}/ws`);
   socket.addEventListener("message", (event) => {
     const data = JSON.parse(event.data);
