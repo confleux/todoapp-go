@@ -4,35 +4,36 @@ Krivenko Andrei
 
 [swagger](https://web-confleux.onrender.com/swagger/index.html)
 
-Entities:
+DB:
 
 ```sql
-create table "user"
-(
-    uid        varchar not null
-        constraint user_pk
-            primary key,
-    created_at timestamp default CURRENT_TIMESTAMP,
-    email      varchar
-);
+feedback_item: table
+    + columns
+        email: varchar
+        text: varchar
+        created_at: timestamp default CURRENT_TIMESTAMP
+todo_item: table
+    + columns
+        description: varchar
+        id: uuid NN
+        created_at: timestamp default CURRENT_TIMESTAMP
+        uid: varchar
+    + indices
+        todo_item_pk: unique (id)
+    + keys
+        todo_item_pk: PK (id)
+    + foreign-keys
+        todo_item_user_uid_fk: foreign key (uid) -> user[.user_pk] (uid)
+user: table
+    + columns
+        uid: varchar NN
+        created_at: timestamp default CURRENT_TIMESTAMP
+        email: varchar
+    + indices
+        user_pk: unique (uid)
+    + keys
+        user_pk: PK (uid)
 
-alter table "user"
-    owner to web_confleux_db_user;
-
-create table todo_item
-(
-    description varchar,
-    id          uuid not null
-        constraint todo_item_pk
-            primary key,
-    created_at  timestamp default CURRENT_TIMESTAMP,
-    uid         varchar
-        constraint todo_item_user_uid_fk
-            references "user"
-);
-
-alter table todo_item
-    owner to web_confleux_db_user;
 ```
 
 ![diagram](assets/img.png)
