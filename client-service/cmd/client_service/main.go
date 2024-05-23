@@ -72,10 +72,12 @@ func main() {
 	// Create repo
 	userRepo := repository.NewUserRepository(pool)
 	todoRepo := repository.NewTodoRepository(pool)
+	feedbackRepo := repository.NewFeedbackRepository(pool)
 
 	// Create service
 	authService, _ := auth.NewAuthService(cfg.Firebase.ServiceAccountConfigPath, userRepo)
 	todoService := service.NewTodoService(todoRepo)
+	feedbackService := service.NewFeedbackService(feedbackRepo)
 
 	// Create controller
 	authController := controller.NewAuthController(authService)
@@ -89,9 +91,13 @@ func main() {
 	privateApiGroup.Use(middleware2.Auth(authService))
 	privateApiGroup.Mount("/api/todos", routes.NewTodoResource(todoController).Routes())
 
+	r.Get("/ws", feedbackService.Handler)
+
+	// Swagger
 	r.Get("/swagger/*", httpSwagger.Handler(
 		httpSwagger.URL("https://web-confleux.onrender.com/swagger/doc.json"), //The url pointing to API definition
 	))
+
 	if err := http.ListenAndServe(fmt.Sprintf(":%d", cfg.HTTPServer.Port), r); err != nil {
 		log.Error("Unable to start server")
 	}
@@ -108,4 +114,8 @@ func initLogger(environment string) *slog.Logger {
 	}
 
 	return log
+}
+
+func hanler(w http.ResponseWriter, r *http.Request) {
+
 }
