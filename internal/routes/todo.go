@@ -3,7 +3,7 @@ package routes
 import (
 	"github.com/go-chi/chi/v5"
 
-	"client-service/internal/controller"
+	"todoapp-go/internal/controller"
 )
 
 type TodosResource struct {

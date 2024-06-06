@@ -1,14 +1,14 @@
 package controller
 
 import (
-	"client-service/internal/service"
 	"encoding/json"
 	"net/http"
+	"todoapp-go/internal/service"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
 
-	"client-service/internal/entities"
+	"todoapp-go/internal/entities"
 )
 
 type TodoController struct {

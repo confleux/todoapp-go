@@ -1,4 +1,4 @@
-module client-service
+module todoapp-go
 
 go 1.22.1
 

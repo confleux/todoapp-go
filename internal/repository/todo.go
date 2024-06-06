@@ -7,7 +7,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"client-service/internal/entities"
+	"todoapp-go/internal/entities"
 )
 
 type TodoRepository struct {

@@ -12,14 +12,14 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	httpSwagger "github.com/swaggo/http-swagger"
 
-	_ "client-service/docs"
-	"client-service/internal/config"
-	"client-service/internal/controller"
-	middleware2 "client-service/internal/middleware"
-	"client-service/internal/repository"
-	"client-service/internal/routes"
-	"client-service/internal/service"
-	auth "client-service/internal/service/auth"
+	_ "todoapp-go/docs"
+	"todoapp-go/internal/config"
+	"todoapp-go/internal/controller"
+	middleware2 "todoapp-go/internal/middleware"
+	"todoapp-go/internal/repository"
+	"todoapp-go/internal/routes"
+	"todoapp-go/internal/service"
+	auth "todoapp-go/internal/service/auth"
 )
 
 const (

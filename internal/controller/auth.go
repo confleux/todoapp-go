@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"client-service/internal/entities"
-	"client-service/internal/service/auth"
 	firebaseAuth "firebase.google.com/go/v4/auth"
+	"todoapp-go/internal/entities"
+	"todoapp-go/internal/service/auth"
 )
 
 type AuthController struct {

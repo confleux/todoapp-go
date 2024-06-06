@@ -8,7 +8,7 @@ import (
 	"firebase.google.com/go/v4/auth"
 	"google.golang.org/api/option"
 
-	"client-service/internal/repository"
+	"todoapp-go/internal/repository"
 )
 
 type AuthService struct {

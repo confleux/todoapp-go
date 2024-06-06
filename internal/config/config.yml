@@ -1,0 +1,7 @@
+environment: "dev"
+httpserver:
+  port: 3000
+postgres:
+  url: "postgres://..."
+firebase:
+  service_account_config_path: "*-firebase-*.json"

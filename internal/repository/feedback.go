@@ -1,10 +1,10 @@
 package repository
 
 import (
-	"client-service/internal/entities"
 	"context"
 	"fmt"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"todoapp-go/internal/entities"
 )
 
 type FeedbackRepository struct {

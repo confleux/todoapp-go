@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 
-	"client-service/internal/service/auth"
+	"todoapp-go/internal/service/auth"
 )
 
 // HTTP middleware setting a value on the request context

@@ -1,15 +1,15 @@
 package service
 
 import (
-	"client-service/internal/entities"
 	"fmt"
 	"log"
 	"net/http"
 	"sync"
+	"todoapp-go/internal/entities"
 
 	"github.com/gorilla/websocket"
 
-	"client-service/internal/repository"
+	"todoapp-go/internal/repository"
 )
 
 type FeedbackService struct {

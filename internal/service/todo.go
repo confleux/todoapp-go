@@ -1,11 +1,11 @@
 package service
 
 import (
-	"client-service/internal/entities"
-	"client-service/internal/repository"
 	"context"
 	"fmt"
 	"github.com/google/uuid"
+	"todoapp-go/internal/entities"
+	"todoapp-go/internal/repository"
 )
 
 type TodoService struct {
